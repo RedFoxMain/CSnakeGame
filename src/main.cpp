@@ -29,7 +29,7 @@ private:
 	enum Direction { UP, DOWN, LEFT, RIGHT } dir_;
 	std::vector<Segment> snake_;
 	Pos fruit_pos_;
-	bool alive_;
+	bool alive_, pause_ = false;
 
 public:
 	int score;
@@ -135,6 +135,9 @@ private:
 						if (dir_ != Direction::LEFT) dir_ = Direction::RIGHT;
 					} else dir_ = Direction::RIGHT;
 					break;
+				case 'p':
+					pause_ = (pause_) ? false : true;
+					break;
 			}
 		}
 	}
@@ -160,10 +163,11 @@ public:
 	void start() {
 		init();
 		while (alive_) {
+			checkInput();
+			if (pause_) continue;
 			drawBoard();
 			updateSegments();
 			spawnFruit();
-			checkInput();
 			handleDir();
 			checkIfIsItTail();
 
