@@ -10,12 +10,12 @@ struct Pos {
 	int x, y;
 	Pos() = default;
 	Pos(int x, int y) : x(x), y(y) {}
-};
 
-// Overload operator == for Pos structure
-bool operator==(const Pos& pos1, const Pos& pos2) {
-	return ((pos1.x == pos2.x) && (pos1.y == pos2.y));
-}
+	// Overload operator == for Pos structure
+	bool operator==(const Pos& pos2) const {
+		return ((this->x == pos2.x) && (this->y == pos2.y));
+	}
+};
 
 struct Segment {
 	std::string symbol; // Symblo S or O
@@ -37,12 +37,22 @@ public:
 private:
 	// Init class fields
 	void init() {
+		hideCursor();
 		system("cls");
 		alive_ = true;
 		dir_ = Direction::RIGHT; // Start snake direction
 		fruit_pos_ = { WIDTH/2, HEIGHT/2 }; // Start fruit position
 		snake_ = { {"S", {1, 1}} }; // Put snake head into snake vector
 		score = 0;
+	}
+
+	// Hide cursor
+	void hideCursor() {
+		HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_CURSOR_INFO info;
+		info.dwSize = 100;
+		info.bVisible = FALSE;
+		SetConsoleCursorInfo(consoleHandle, &info);
 	}
 
 	// Print colored text to console
